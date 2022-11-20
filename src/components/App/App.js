@@ -1,14 +1,12 @@
-// == Import
 import './app.scss';
+import Game from '../Game/Game';
 
-// == Composant
 function App() {
   return (
     <div className="app">
-      {/* <Game rows={20} colomns={10} /> */}
+      <Game rows={20} columns={10} />
     </div>
   );
 }
 
-// == Export
 export default App;

@@ -1,0 +1,42 @@
+.bordCell {
+  width: auto;
+  border-radius: 6px;
+  position: relative;
+}
+.tetromino {
+  border: 3px solid rgba($color: white, $alpha: 0.1), 3px solid rgba($color: black, $alpha: 0.1), 3px solid rgba($color: black, $alpha: 0.1), 3px solid rgba($color: white, $alpha: 0.1);
+}
+.tetromino .sparkle {
+  position: absolute;
+  z-index: 10;
+  width: 6px;
+  height: 6px;
+  left: -2px;
+  top: -2px;
+  background-color: rgba($color: white, $alpha: 0.4);
+  border-radius: 4px 4px;
+}
+.tetromino.ghost .sparkle {
+  opacity: 0;
+}
+.tetromino__i {
+  background-color: rgba($color: #14f1d4, $alpha: 1.0);
+}
+.tetromino__j {
+  background-color: rgba($color: #3a44cc, $alpha: 1.0);
+}
+.tetromino__l {
+  background-color: rgba($color: #e0b234, $alpha: 1.0);
+}
+.tetromino__o {
+  background-color: rgba($color: #f3d173, $alpha: 1.0);
+}
+.tetromino__t {
+  background-color: rgba($color: #b973f3, $alpha: 1.0);
+}
+.tetromino__s {
+  background-color: rgba($color: #88f373, $alpha: 1.0);
+}
+.tetromino__z {
+  background-color: rgba($color: #da9fec, $alpha: 1.0);
+}

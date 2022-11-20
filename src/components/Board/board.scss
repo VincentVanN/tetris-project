@@ -1,0 +1,12 @@
+.board {
+  margin: 2em auto;
+  display: grid;
+  row-gap: 2px;
+  column-gap: 2px;
+  width: 45vw;
+  height: 90vh;
+  background: rgb(32, 0, 64);
+  border: 10px solid rgb(32, 0, 64);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba($color: black, $alpha: 0.35);
+}
