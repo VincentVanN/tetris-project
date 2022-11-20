@@ -1,17 +1,22 @@
 import PropTypes from 'prop-types';
 import { useBoard } from '../../hooks/useBoard';
 import { useGameStats } from '../../hooks/useGameStats';
+import { usePlayer } from '../../hooks/usePlayer';
 import Board from '../Board/Board';
 import GameStats from '../GameStats/GameStats';
 import Previews from '../Previews/Previews';
 import './tetris.scss';
 
 function Tetris({ rows, columns, setGameOver }) {
-  const [board] = useBoard({ rows, columns });
+  const [player, setPlayer, resetPlayer] = usePlayer();
   const [gameStats, addLinesCleared] = useGameStats();
-  const player = {
-    tetrominoes: [],
-  };
+  const [board] = useBoard({
+    rows,
+    columns,
+    player,
+    resetPlayer,
+    addLinesCleared,
+  });
   return (
     <div className="tetris">
       <Board board={board} />

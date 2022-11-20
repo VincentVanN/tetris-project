@@ -6,7 +6,6 @@ function GameStats({ gameStats }) {
   const {
     level, points, linesCompleted, linesPerLevel,
   } = gameStats;
-  console.log(gameStats);
   const linesToLevel = (Number(linesPerLevel || 0)) - (Number(linesCompleted || 0));
 
   return (
