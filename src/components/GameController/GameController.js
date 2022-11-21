@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 
 import PropTypes from 'prop-types';
-import { Action, actionForKey } from '../../utils/input';
+import { useDropTime } from '../../hooks/useDropTime';
+import { useInterval } from '../../hooks/useInterval';
+import { Action, actionForKey, actionIsDrop } from '../../utils/input';
 import { playerController } from '../../utils/playerController';
 import './gameController.scss';
 
@@ -12,6 +14,7 @@ function GameController({
   setGameOver,
   setPlayer,
 }) {
+  const [dropTime, pauseDropTime, resumeDropTime] = useDropTime({ gameStats });
   const handleInput = ({ action }) => {
     playerController({
       action,
@@ -21,15 +24,28 @@ function GameController({
       setPlayer,
     });
   };
+  useInterval(() => {
+    handleInput({ action: Action.SlowDrop });
+  }, dropTime);
   const onKeyUp = ({ code }) => {
     const action = actionForKey(code);
-    if (action === Action.Quit) {
-      setGameOver(true);
-    }
+    if (actionIsDrop(action)) resumeDropTime();
   };
   const onKeyDown = ({ code }) => {
     const action = actionForKey(code);
-    handleInput({ action });
+    if (action === Action.Pause) {
+      if (dropTime) {
+        pauseDropTime();
+      }
+      else resumeDropTime();
+    }
+    else if (action === Action.Quit) {
+      setGameOver(true);
+    }
+    else {
+      if (actionIsDrop(action)) resumeDropTime();
+      handleInput({ action });
+    }
   };
   return (
     <input
