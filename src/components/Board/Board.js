@@ -5,7 +5,6 @@ import BoardCell from '../BoardCell/BoardCell';
 import './board.scss';
 
 function Board({ board }) {
-  console.log(board);
   const boardStyles = {
     gridTemplateRows: `repeat(${board.size.rows}, 1fr)`,
     gridTemplateColumns: `repeat(${board.size.columns}, 1fr)`,

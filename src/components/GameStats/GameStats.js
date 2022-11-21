@@ -14,7 +14,7 @@ function GameStats({ gameStats }) {
       <li className="value">{level}</li>
       <li>Lines to level</li>
       <li className="value">{linesToLevel}</li>
-      <li>Points</li>
+      <li>{`Point${points > 1 ? 's' : ''}`}</li>
       <li className="value">{points}</li>
     </ul>
   );

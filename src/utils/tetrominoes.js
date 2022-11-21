@@ -60,12 +60,16 @@ export const TETROMINOES = {
 };
 export const randomTetromino = () => {
   const keys = Object.keys(TETROMINOES);
-  console.log(keys);
   const index = Math.floor(Math.random() * keys.length);
-  console.log(Math.random() * keys.length);
-  console.log(index);
+
   const key = keys[index];
   return TETROMINOES[key];
+};
+export const rotate = ({ piece, direction }) => {
+// rows <====> collumns
+  const newPiece = piece.map((_, index) => piece.map((column) => column[index]));
+  if (direction > 0) return newPiece.map((row) => row.reverse());
+  return newPiece.reverse();
 };
 export const transferToBoard = ({
   className,
@@ -78,7 +82,7 @@ export const transferToBoard = ({
     row.forEach((cell, x) => {
       if (cell) {
         const occupied = isOccupied;
-        const newY = (y + position.row);
+        const newY = y + position.row;
         const newX = x + position.column;
         rows[newY][newX] = { occupied, className };
       }

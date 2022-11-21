@@ -10,7 +10,7 @@ function Game({ rows, columns }) {
     <div className="game">
       {gameOver ? (<Menu onClick={start} />)
         : (
-          <><Tetris rows={rows} columns={columns} setGameOver={setGameOver} /><p>Tetris</p></>
+          <Tetris rows={rows} columns={columns} setGameOver={setGameOver} />
         )}
     </div>
   );
