@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import { useDropTime } from '../../hooks/useDropTime';
 import { useInterval } from '../../hooks/useInterval';
 import { Action, actionForKey, actionIsDrop } from '../../utils/input';
@@ -14,7 +16,9 @@ function GameController({
   setGameOver,
   setPlayer,
 }) {
-  const [keyPress, setKeyPress] = useState({ keyUp: '', keyDown: '' });
+  const prevKeyUpRef = useRef();
+  const prevKeyDownRef = useRef();
+  const [keyPress, setKeyPress] = useState({});
   const [dropTime, pauseDropTime, resumeDropTime] = useDropTime({
     gameStats,
   });
@@ -30,15 +34,17 @@ function GameController({
   useInterval(() => {
     handleInput({ action: Action.SlowDrop });
   }, dropTime);
-
+  console.log(keyPress);
+  if (keyPress.keyUp) {
+    const actionKeyUp = actionForKey(keyPress.keyUp);
+    if (actionIsDrop(actionKeyUp)) resumeDropTime();
+    setKeyPress({ keyUp: '', keyDown: '' });
+  }
   useEffect(() => {
-    if (keyPress.keyUp) {
-      const action = actionForKey(keyPress.keyUp);
-      if (actionIsDrop(action)) resumeDropTime();
-    }
+    prevKeyUpRef.current = keyPress.keyUp;
+    prevKeyDownRef.current = keyPress.keyDown;
     if (keyPress.keyDown) {
       const action = actionForKey(keyPress.keyDown);
-
       if (action === Action.Pause) {
         if (dropTime) {
           pauseDropTime();
@@ -59,8 +65,15 @@ function GameController({
       }
     }
   }, [keyPress]);
-  const handleKeyUp = (e) => setKeyPress({ keyUp: e.code, keyDown: '' });
-  const handleKeyDown = (e) => setKeyPress({ keyUp: '', keyDown: e.code });
+  const handleKeyUp = useCallback((e) => {
+    setKeyPress({ keyUp: e.code, keyDown: '' });
+  }, [keyPress]);
+  const handleKeyDown = useCallback((e) => {
+    setKeyPress({ keyUp: '', keyDown: e.code });
+    setInterval(() => {
+      setKeyPress({ keyUp: e.code, keyDown: '' });
+    }, 100);
+  }, [keyPress]);
   useEffect(() => {
     window.addEventListener('keyup', handleKeyUp);
     window.addEventListener('keydown', handleKeyDown);
