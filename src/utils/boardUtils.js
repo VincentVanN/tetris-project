@@ -5,6 +5,7 @@
 import { defaultCell } from './cell';
 import { movePlayer } from './playerController';
 import { transferToBoard } from './tetrominoes';
+import laidup from '../sound/laidup.mp3';
 
 export const buildBoard = ({ rows, columns }) => {
   const builtRows = Array.from({ length: rows }, () => Array.from({ length: columns }, () => ({ ...defaultCell })));
@@ -39,6 +40,7 @@ const findDropPosition = ({ board, position, shape }) => {
 export const nextBoard = ({
   board, player, resetPlayer, addLinesCleared,
 }) => {
+  const laidupMusic = new Audio(laidup);
   const { tetromino, position } = player;
 
   // Copy and clear spaces used by pieces that
@@ -94,9 +96,9 @@ export const nextBoard = ({
   if (linesCleared > 0) {
     addLinesCleared(linesCleared);
   }
-
   // If we collided, reset the player!
   if (player.collided || player.isFastDropping) {
+    laidupMusic.play();
     resetPlayer();
   }
 

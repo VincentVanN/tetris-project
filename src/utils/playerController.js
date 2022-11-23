@@ -1,8 +1,12 @@
+/* eslint-disable import/no-cycle */
 import { hasCollision, isWithinBoard } from './boardUtils';
 import { Action } from './input';
 import { rotate } from './tetrominoes';
+import fastDrop from '../sound/fastDrop.mp3';
+import rotateSound from '../sound/rotate.mp3';
 /* eslint-disable import/prefer-default-export */
 const attemptRotation = ({ board, player, setPlayer }) => {
+  const rotateSample = new Audio(rotateSound);
   const shape = rotate({
     piece: player.tetromino.shape,
     direction: 1,
@@ -13,6 +17,7 @@ const attemptRotation = ({ board, player, setPlayer }) => {
     && !hasCollision({ board, position, shape });
 
   if (isValidRotation) {
+    rotateSample.play();
     setPlayer({
       ...player,
       tetromino: {
@@ -56,10 +61,12 @@ export const movePlayer = ({
 const attemptMovement = ({
   board, action, player, setPlayer, setGameOver,
 }) => {
+  const fastDropSound = new Audio(fastDrop);
   const delta = { row: 0, column: 0 };
   let isFastDropping = false;
 
   if (action === Action.FastDrop) {
+    fastDropSound.play();
     isFastDropping = true;
   }
   else if (action === Action.SlowDrop) {
