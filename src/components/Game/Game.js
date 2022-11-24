@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import './game.scss';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { isBrowser } from 'react-device-detect';
 import useKeypress from 'react-use-keypress';
 import gameover from '../../sound/gameover.mp3';
 import { useGameOver } from '../../hooks/useGameOver';
@@ -14,7 +15,7 @@ import { useGameStats } from '../../hooks/useGameStats';
 function Game({ rows, columns }) {
   const [playMusic, setplayMusic] = useState(true);
   const [clickMute, setclickMute] = useState(false);
-  const [gameStats, addLinesCleared] = useGameStats();
+  const [gameStats, addLinesCleared, setGameStats] = useGameStats();
   const [gameOver, setGameOver, resetGameOver] = useGameOver();
   const gameoverSound = new Audio(gameover);
   const start = () => {
@@ -29,6 +30,12 @@ function Game({ rows, columns }) {
       gameoverSound.play();
       setTimeout(() => {
         setGameOver({ isGameOver: true, afterPlaying: false });
+        setGameStats({
+          level: 1,
+          linesCompleted: 0,
+          linesPerLevel: 5,
+          points: 0,
+        });
         if (!clickMute) {
           setplayMusic(true);
         }
@@ -62,7 +69,10 @@ function Game({ rows, columns }) {
             onClick={start}
             playMusic={playMusic}
           />
+          {isBrowser && (
           <Footer />
+          )}
+
         </>
       )
         : (

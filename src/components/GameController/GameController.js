@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 
 import PropTypes from 'prop-types';
-import { useRef } from 'react';
+import {
+  useCallback, useEffect, useLayoutEffect, useState,
+} from 'react';
 import { useDropTime } from '../../hooks/useDropTime';
 import { useInterval } from '../../hooks/useInterval';
 import { Action, actionForKey, actionIsDrop } from '../../utils/input';
@@ -15,7 +17,21 @@ function GameController({
   setGameOver,
   setPlayer,
 }) {
-  const ref = useRef();
+  const [keyPress, setkeyPress] = useState({});
+  const keyupHandler = useCallback((e) => {
+    setkeyPress({ keyUp: e.code, keyDown: '' });
+  });
+  const keyDownHandler = useCallback((e) => {
+    setkeyPress({ keyUp: '', keyDown: e.code });
+  });
+  useEffect(() => {
+    document.addEventListener('keydown', keyDownHandler);
+    document.addEventListener('keyup', keyupHandler);
+    return () => {
+      document.removeEventListener('keydown', keyDownHandler);
+      document.removeEventListener('keyup', keyupHandler);
+    };
+  }, []);
   const [dropTime, pauseDropTime, resumeDropTime] = useDropTime({ gameStats });
   const handleInput = ({ action }) => {
     playerController({
@@ -29,36 +45,30 @@ function GameController({
   useInterval(() => {
     handleInput({ action: Action.SlowDrop });
   }, dropTime);
-  const onKeyUp = ({ code }) => {
-    const action = actionForKey(code);
-    if (actionIsDrop(action)) resumeDropTime();
-  };
-  const onKeyDown = ({ code }) => {
-    const action = actionForKey(code);
-    if (action === Action.Pause) {
-      if (dropTime) {
-        pauseDropTime();
-      }
-      else resumeDropTime();
-    }
-    else if (action === Action.Quit) {
-      setGameOver(true);
-    }
-    else {
+  useLayoutEffect(() => {
+    if (keyPress.keyUp) {
+      const action = actionForKey(keyPress.keyUp);
       if (actionIsDrop(action)) resumeDropTime();
-      handleInput({ action });
     }
-  };
+    if (keyPress.keyDown) {
+      const action = actionForKey(keyPress.keyDown);
+      if (action === Action.Pause) {
+        if (dropTime) {
+          pauseDropTime();
+        }
+        else resumeDropTime();
+      }
+      else if (action === Action.Quit) {
+        setGameOver(true);
+      }
+      else {
+        if (actionIsDrop(action)) resumeDropTime();
+        handleInput({ action });
+      }
+    }
+  }, [keyPress]);
   return (
-    <input
-      ref={ref}
-      type="text"
-      className="gameController"
-      onKeyDown={onKeyDown}
-      onKeyUp={onKeyUp}
-      autoFocus
-      onBlur={() => ref.current.focus()}
-    />
+    <div />
   );
 }
 GameController.propTypes = {

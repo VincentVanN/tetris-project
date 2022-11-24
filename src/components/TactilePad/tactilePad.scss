@@ -1,0 +1,21 @@
+.tactilePad {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  align-items: center;
+  justify-content: space-between;
+  color: rgba(255, 255, 255, 0.8);
+  z-index: 12000;
+}
+.tactilePad-left, .tactilePad-right {
+ 
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.tactileButton {
+  color: rgba(255, 255, 255, 0.9);
+  
+}

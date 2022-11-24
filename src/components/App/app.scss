@@ -10,7 +10,7 @@
 }
 .enterButton {
   padding: 40px 80px;
-  font-size: 2em;
+  font-size: max(3vw, 20px);
   border-radius: 20px;
   border: none;
   box-shadow: 0 0 60 rgba(0, 0, 0, 0.5);
@@ -18,5 +18,4 @@
   font-family: 'Press Start 2P';
   background: none;
   color: #fff;
-  font-size: 3em;
 }

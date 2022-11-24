@@ -2,7 +2,6 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import './app.scss';
 import { motion } from 'framer-motion';
-import useKeypress from 'react-use-keypress';
 import { useCallback, useEffect, useState } from 'react';
 import Game from '../Game/Game';
 import Loading from '../Loading/Loading';
@@ -21,10 +20,6 @@ function App() {
       }, 3000);
     }
   }, [loading]);
-  useKeypress('Enter', () => {
-    setEnter(true);
-    setloading(true);
-  });
   return (
 
     <div className="app">

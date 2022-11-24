@@ -10,11 +10,10 @@
   grid-gap: 2px;
   grid-template-rows: repeat(4, 1fr);
   grid-template-columns: repeat(4, 1fr);
-  width: 5vw;
-  height: 5vw;
+  width: 10vw;
+  height: 10vw;
 }
 .previews {
-  width: 5vw;
   display: flex;
   flex-direction: column;
   text-align: left;

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import './menu.scss';
 import { motion } from 'framer-motion';
+import { isBrowser } from 'react-device-detect';
 import gameMenu from '../../sound/gameMenu.mp3';
 import ParticlesComponent from '../Particles/ParticlesComponent';
 import { particlesMenu } from '../../particles/particlesOptions';
@@ -43,14 +44,17 @@ function Menu({
       >
         START
       </motion.button>
-      <button
-        type="button"
-        className="seeControlsButton"
-        onClick={() => setIsSeeControls(!isSeeControls)}
-      >
-        {isSeeControls ? 'Hide controls' : 'See controls?'}
-      </button>
-      {isSeeControls && (
+      {isBrowser && (
+        <button
+          type="button"
+          className="seeControlsButton"
+          onClick={() => setIsSeeControls(!isSeeControls)}
+        >
+          {isSeeControls ? 'Hide controls' : 'See controls?'}
+        </button>
+      )}
+
+      {(isSeeControls && isBrowser) && (
         <div className="menu-control">
           <div>Left Arrow: Tetromino goes to the left.</div>
           <div>Right Arrow: Tetromino goes to the right.</div>

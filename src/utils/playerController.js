@@ -4,6 +4,7 @@ import { Action } from './input';
 import { rotate } from './tetrominoes';
 import fastDrop from '../sound/fastDrop.mp3';
 import rotateSound from '../sound/rotate.mp3';
+import { useGameStats } from '../hooks/useGameStats';
 /* eslint-disable import/prefer-default-export */
 const attemptRotation = ({ board, player, setPlayer }) => {
   const rotateSample = new Audio(rotateSound);
