@@ -1,0 +1,20 @@
+.footer {
+  position: absolute;
+  bottom: 3vh;
+  margin: auto;
+  font-family: 'Press Start 2P';
+  font-size: 0.7em;
+  color: #474343;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &-text {
+    margin-right: 10px;
+    padding-bottom: 4px;
+  }
+  &-logo {
+    width: 0.8vw;
+    margin-bottom: 5px;
+  }
+}

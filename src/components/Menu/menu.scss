@@ -2,7 +2,6 @@
   font-family: neon;
   src: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/707108/neon.ttf);
 }
-
 .menu {
  width: 100%;
  height: 100%;
@@ -13,21 +12,18 @@
 }
 .button {
   position: absolute;
-  bottom: 10vh;
-  padding: 40px 80px;
-  font-size: 2em;
-  border-radius: 20px;
+  bottom: 15vh;
   border: none;
   font-family: 'Press Start 2P';
   font-size: 3em;
   background: none;
   color: white;
-  box-shadow: 0 0 60 rgba(0, 0, 0, 0.5);
   cursor: pointer;
   z-index: 10000;
 }
 .container {
-  position: relative;
+  position: absolute;
+  top: 0;
   margin-top: 10vh;
   display: table-cell;
   text-align: center;
@@ -48,7 +44,7 @@
   position: relative;
   font-family: neon;
   color: #426DFB;
-  font-size: 9vw;
+  font-size: 5vw;
   line-height: 9vw;
   text-shadow: 0 0 3vw #2356FF;
   z-index: 10000;
@@ -89,4 +85,31 @@
     text-shadow: 0 0 .5vw #082180, 0 0 1.5vw #082180, 0 0 5vw #082180, 0 0 5vw #082180, 0 0 .2vw #082180, .5vw .5vw .1vw #0A3940;
     color: #146C80;
   }
+}
+.menu-control {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  font-family: 'Press Start 2P';
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  font-size: 1.5em;
+  color: rgba(255, 255, 255, 0.3);
+  & div {
+    margin-bottom: 10px;
+  }
+}
+.seeControlsButton {
+  position: absolute;
+  bottom: 7vh;
+  font-size: 1em;
+  border: none;
+  font-family: 'Press Start 2P';
+  background: none;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  z-index: 10000;
 }

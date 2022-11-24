@@ -3,7 +3,10 @@
   background: black;
   height: 100vh;
   width: 100vw;
-  padding: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .enterButton {
   padding: 40px 80px;
@@ -12,4 +15,8 @@
   border: none;
   box-shadow: 0 0 60 rgba(0, 0, 0, 0.5);
   cursor: pointer;
+  font-family: 'Press Start 2P';
+  background: none;
+  color: #fff;
+  font-size: 3em;
 }

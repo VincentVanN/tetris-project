@@ -86,10 +86,10 @@ const attemptMovement = ({
     board,
   });
 
-  // Did we collide immediately? If so, game over, man!
+  // gameover!
   const isGameOver = collided && player.position.row === 0;
   if (isGameOver) {
-    setGameOver(isGameOver);
+    setGameOver({ isGameOver: true, afterPlaying: true });
   }
 
   setPlayer({

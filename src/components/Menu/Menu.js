@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './menu.scss';
 import { motion } from 'framer-motion';
 import gameMenu from '../../sound/gameMenu.mp3';
@@ -12,6 +12,7 @@ function Menu({
   playMusic,
 }) {
   const menuMusic = new Audio(gameMenu);
+  const [isSeeControls, setIsSeeControls] = useState(false);
   useEffect(() => {
     if (playMusic) {
       menuMusic.loop = true;
@@ -26,7 +27,7 @@ function Menu({
     <div className="menu">
       <div className="container">
         <div className="neon">Tetris </div>
-        <div className="flux">Clone</div>
+        <div className="flux">Among Us</div>
       </div>
       <ParticlesComponent
         optionParticles={particlesMenu}
@@ -42,6 +43,22 @@ function Menu({
       >
         START
       </motion.button>
+      <button
+        type="button"
+        className="seeControlsButton"
+        onClick={() => setIsSeeControls(!isSeeControls)}
+      >
+        {isSeeControls ? 'Hide controls' : 'See controls?'}
+      </button>
+      {isSeeControls && (
+        <div className="menu-control">
+          <div>Left Arrow: Tetromino goes to the left.</div>
+          <div>Right Arrow: Tetromino goes to the right.</div>
+          <div>Arrow up: Rotate.</div>
+          <div>Arrow down: Slow drop.</div>
+          <div>Space: Fast drop.</div>
+        </div>
+      )}
     </div>
   );
 }
