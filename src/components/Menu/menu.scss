@@ -15,7 +15,7 @@
   bottom: 15vh;
   border: none;
   font-family: 'Press Start 2P';
-  font-size: 3em;
+  font-size: max(3vw, 20px);
   background: none;
   color: white;
   cursor: pointer;
@@ -34,8 +34,8 @@
   position: relative;
   font-family: neon;
   color: #FB4264;
-  font-size: 9vw;
-  line-height: 9vw;
+  font-size: max(9vw, 90px);
+  line-height: max(9vw, 90px);
   text-shadow: 0 0 3vw #F40A35;
   z-index: 10000;
 }
@@ -44,8 +44,8 @@
   position: relative;
   font-family: neon;
   color: #426DFB;
-  font-size: 5vw;
-  line-height: 9vw;
+  font-size: max(5vw, 50px);
+  line-height: max(9vw, 90px);
   text-shadow: 0 0 3vw #2356FF;
   z-index: 10000;
 }

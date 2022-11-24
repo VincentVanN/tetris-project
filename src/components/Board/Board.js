@@ -2,19 +2,27 @@
 /* eslint-disable max-len */
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { isBrowser } from 'react-device-detect';
+import { useEffect, useRef, useState } from 'react';
 import { useWindowSize } from '@react-hook/window-size';
 import BoardCell from '../BoardCell/BoardCell';
 import './board.scss';
 
 function Board({ board, isLvUp, setisLvUp }) {
-  const [width] = useWindowSize({ fps: 60 });
+  const [boardWidth, setboardWidth] = useState(0);
+  const boardRef = useRef();
+  const [width, height] = useWindowSize({ fps: 60 });
   const boardStyles = {
     gridTemplateRows: `repeat(${board.size.rows}, 1fr)`,
     gridTemplateColumns: `repeat(${board.size.columns}, 1fr)`,
-    width: width / 5,
-    height: width / 2.5,
+    width: isBrowser ? ((height * 0.75) / 2) : ((height * 0.9) / 2),
+    height: isBrowser ? height * 0.75 : height * 0.9,
   };
+  useEffect(() => {
+    if (boardRef.current) {
+      setboardWidth(boardRef.current.clientWidth);
+    }
+  }, [width]);
   useEffect(() => {
     if (isLvUp.active) {
       setTimeout(() => {
@@ -23,7 +31,11 @@ function Board({ board, isLvUp, setisLvUp }) {
     }
   }, [isLvUp]);
   return (
-    <div className="board" style={boardStyles}>
+    <div
+      className={`board ${isBrowser ? 'browser' : ''}`}
+      style={boardStyles}
+      ref={boardRef}
+    >
       <motion.div
         className="lvlUp"
         initial={{ scale: 0 }}
@@ -45,7 +57,7 @@ function Board({ board, isLvUp, setisLvUp }) {
           {`Level ${isLvUp.lvl}`}
         </motion.p>
       </motion.div>
-      {board.rows.map((row) => row.map((cell, x) => <BoardCell key={(x * board.size.columns) + x} cell={cell} />))}
+      {board.rows.map((row) => row.map((cell, x) => <BoardCell key={(x * board.size.columns) + x} cell={cell} boardWidth={boardWidth} />))}
     </div>
   );
 }

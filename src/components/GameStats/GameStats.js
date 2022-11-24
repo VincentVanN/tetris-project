@@ -33,8 +33,10 @@ function GameStats({ gameStats, setisLvUp }) {
       <motion.li
         className="value"
         key={points}
-        initial={{ scale: 1 }}
-        animate={{ scale: points ? [1, 1.8, 1] : 1 }}
+        initial={{ scale: 1}}
+        animate={{
+          scale: points ? [1, 1.8, 1] : 1,
+        }}
         transition={{
           duration: 0.35,
         }}

@@ -14,7 +14,8 @@
 }
 
 .value {
-font-size: 2em;
+font-size: max(2vw, 16px);
   margin-bottom: 0.5em;
   color: rgba(255, 255, 255, 1);
+  z-index: 11500;
 }

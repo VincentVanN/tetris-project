@@ -28,5 +28,5 @@ export const useGameStats = () => {
     }, []);
   }, []);
 
-  return [gameStats, addLinesCleared];
+  return [gameStats, addLinesCleared, setGameStats];
 };

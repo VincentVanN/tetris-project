@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import { isMobile } from 'react-device-detect';
 import { motion } from 'framer-motion';
 import gameTypeA from '../../sound/amongus.mp3';
 import { useBoard } from '../../hooks/useBoard';
@@ -12,6 +13,7 @@ import './tetris.scss';
 import ParticlesComponent from '../Particles/ParticlesComponent';
 import { tetrisParticles } from '../../particles/particlesOptions';
 import { useDropTime } from '../../hooks/useDropTime';
+import TactilePad from '../TactilePad/TactilePad';
 
 function Tetris({
   rows,
@@ -64,11 +66,18 @@ function Tetris({
   }, [gameOver]);
   //
   return (
-    <div className="tetris">
+    <div
+      className="tetris"
+    >
       <motion.div
         className="starterWindow"
         initial={{ scale: 1 }}
-        animate={{ scale: !isStarted ? 1 : 0 }}
+        animate={{
+          scale: !isStarted ? 1 : 0,
+        }}
+        style={{
+          background: !isStarted ? '#000' : 'transparent',
+        }}
       >
         <p className="starterWindow-text">let's go!!</p>
       </motion.div>
@@ -77,7 +86,12 @@ function Tetris({
         optionParticles={tetrisParticles}
       />
 
-      <div className="boardContainer">
+      <div
+        className="boardContainer"
+        style={{
+          marginBottom: isMobile ? '10vh' : 0,
+        }}
+      >
         <Board board={board} isLvUp={isLvUp} setisLvUp={setisLvUp} />
         <div className="rightPart">
           <Previews tetrominoes={player.tetrominoes} />
@@ -94,6 +108,9 @@ function Tetris({
         pauseDropTime={pauseDropTime}
         resumeDropTime={resumeDropTime}
       />
+      {isMobile && (
+      <TactilePad />
+      )}
     </div>
   );
 }
