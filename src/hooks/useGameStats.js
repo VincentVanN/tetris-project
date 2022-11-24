@@ -1,11 +1,10 @@
 /* eslint-disable no-mixed-operators */
 import { useCallback, useState } from 'react';
-
 /* eslint-disable import/prefer-default-export */
 const buildGameStats = () => ({
   level: 1,
   linesCompleted: 0,
-  linesPerLevel: 10,
+  linesPerLevel: 5,
   points: 0,
 });
 export const useGameStats = () => {

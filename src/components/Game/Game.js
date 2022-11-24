@@ -1,34 +1,88 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import './game.scss';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import useKeypress from 'react-use-keypress';
+import gameover from '../../sound/gameover.mp3';
 import { useGameOver } from '../../hooks/useGameOver';
 import Menu from '../Menu/Menu';
 import Tetris from '../Tetris/Tetris';
+import Mute from '../Mute/Mute';
+import Footer from '../Footer/Footer';
+import { useGameStats } from '../../hooks/useGameStats';
 
 function Game({ rows, columns }) {
   const [playMusic, setplayMusic] = useState(true);
+  const [clickMute, setclickMute] = useState(false);
+  const [gameStats, addLinesCleared] = useGameStats();
   const [gameOver, setGameOver, resetGameOver] = useGameOver();
+  const gameoverSound = new Audio(gameover);
   const start = () => {
     resetGameOver();
   };
   useKeypress('Enter', () => {
     resetGameOver();
   });
+  useEffect(() => {
+    if (gameOver.isGameOver && gameOver.afterPlaying) {
+      setplayMusic(false);
+      gameoverSound.play();
+      setTimeout(() => {
+        setGameOver({ isGameOver: true, afterPlaying: false });
+        if (!clickMute) {
+          setplayMusic(true);
+        }
+      }, 4000);
+    }
+  }, [gameOver]);
   return (
     <div className="game">
-      {gameOver ? (
-        <Menu
-          onClick={start}
-          playMusic={playMusic}
-        />
-      )
-        : (
-          <Tetris
-            rows={rows}
-            columns={columns}
-            setGameOver={setGameOver}
+      <motion.div
+        className="gameOverWindow"
+        initial={{ scale: 1 }}
+        animate={{
+          scale: gameOver.isGameOver && gameOver.afterPlaying ? 1 : 0,
+        }}
+        style={{
+          zIndex: gameOver.isGameOver && gameOver.afterPlaying ? 11000 : -1,
+        }}
+      >
+        <p className="gameOverWindow-text">GAME OVER</p>
+        <p className="gameOverWindow-score">{`SCORE: ${gameStats.points}`}</p>
+      </motion.div>
+      {gameOver.isGameOver && !gameOver.afterPlaying ? (
+        <>
+          <Mute
+            setplayMusic={setplayMusic}
+            setclickMute={setclickMute}
+            playMusic={playMusic}
+            clickMute={clickMute}
+          />
+          <Menu
+            onClick={start}
             playMusic={playMusic}
           />
+          <Footer />
+        </>
+      )
+        : (
+          <>
+            <Mute
+              setplayMusic={setplayMusic}
+              setclickMute={setclickMute}
+              playMusic={playMusic}
+              clickMute={clickMute}
+            />
+            <Tetris
+              rows={rows}
+              columns={columns}
+              setGameOver={setGameOver}
+              gameOver={gameOver}
+              playMusic={playMusic}
+              gameStats={gameStats}
+              addLinesCleared={addLinesCleared}
+            />
+          </>
         )}
     </div>
   );

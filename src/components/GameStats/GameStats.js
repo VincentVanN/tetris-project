@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
 import './gameStats.scss';
 import lvlup from '../../sound/lvlup.mp3';
 import line from '../../sound/line.mp3';
 
-function GameStats({ gameStats }) {
+function GameStats({ gameStats, setisLvUp }) {
   const levelupSound = new Audio(lvlup);
   const lineSound = new Audio(line);
   const {
@@ -14,6 +15,7 @@ function GameStats({ gameStats }) {
   useEffect(() => {
     if (level && level > 1) {
       levelupSound.play();
+      setisLvUp({ active: true, lvl: level });
     }
   }, [level]);
   useEffect(() => {
@@ -28,11 +30,22 @@ function GameStats({ gameStats }) {
       <li>Lines to level</li>
       <li className="value">{linesToLevel}</li>
       <li>{`Point${points > 1 ? 's' : ''}`}</li>
-      <li className="value">{points}</li>
+      <motion.li
+        className="value"
+        key={points}
+        initial={{ scale: 1 }}
+        animate={{ scale: points ? [1, 1.8, 1] : 1 }}
+        transition={{
+          duration: 0.35,
+        }}
+      >
+        {points}
+      </motion.li>
     </ul>
   );
 }
 GameStats.propTypes = {
   gameStats: PropTypes.object.isRequired,
+  setisLvUp: PropTypes.func.isRequired,
 };
 export default React.memo(GameStats);

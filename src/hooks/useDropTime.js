@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 /* eslint-disable import/prefer-default-export */
 const defaultDropTime = 1000;
 const minimumDropTime = 100;
-const speedIncrement = 50;
+const speedIncrement = 73;
 export const useDropTime = ({ gameStats }) => {
   const [dropTime, setDropTime] = useState(defaultDropTime);
   const [previousDropTime, setPreviousDropTime] = useState();

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 function BoardCell({ cell }) {
   return (
-    <div className={`boardCell ${cell.className}`}>
-      <div className="sparkle" />
-    </div>
+    <div
+      className={`boardCell ${cell.className}`}
+    />
   );
 }
 BoardCell.propTypes = {

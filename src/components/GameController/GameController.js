@@ -1,13 +1,12 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 
 import PropTypes from 'prop-types';
-import {
-  useCallback, useEffect, useRef, useState,
-} from 'react';
+import { useRef } from 'react';
 import { useDropTime } from '../../hooks/useDropTime';
 import { useInterval } from '../../hooks/useInterval';
 import { Action, actionForKey, actionIsDrop } from '../../utils/input';
 import { playerController } from '../../utils/playerController';
+import './gameController.scss';
 
 function GameController({
   board,
@@ -16,79 +15,52 @@ function GameController({
   setGameOver,
   setPlayer,
 }) {
-  const prevKeyUpRef = useRef();
-  const prevKeyDownRef = useRef();
-  const [keyPress, setKeyPress] = useState({});
-  const [dropTime, pauseDropTime, resumeDropTime] = useDropTime({
-    gameStats,
-  });
+  const ref = useRef();
+  const [dropTime, pauseDropTime, resumeDropTime] = useDropTime({ gameStats });
   const handleInput = ({ action }) => {
     playerController({
       action,
       board,
       player,
-      setPlayer,
       setGameOver,
+      setPlayer,
     });
   };
   useInterval(() => {
     handleInput({ action: Action.SlowDrop });
   }, dropTime);
-  console.log(keyPress);
-  if (keyPress.keyUp) {
-    const actionKeyUp = actionForKey(keyPress.keyUp);
-    if (actionIsDrop(actionKeyUp)) resumeDropTime();
-    setKeyPress({ keyUp: '', keyDown: '' });
-  }
-  useEffect(() => {
-    prevKeyUpRef.current = keyPress.keyUp;
-    prevKeyDownRef.current = keyPress.keyDown;
-    if (keyPress.keyDown) {
-      const action = actionForKey(keyPress.keyDown);
-      if (action === Action.Pause) {
-        if (dropTime) {
-          pauseDropTime();
-        }
-        else {
-          resumeDropTime();
-        }
+  const onKeyUp = ({ code }) => {
+    const action = actionForKey(code);
+    if (actionIsDrop(action)) resumeDropTime();
+  };
+  const onKeyDown = ({ code }) => {
+    const action = actionForKey(code);
+    if (action === Action.Pause) {
+      if (dropTime) {
+        pauseDropTime();
       }
-      else if (action === Action.Quit) {
-        setGameOver(true);
-      }
-      else {
-        if (actionIsDrop(action)) pauseDropTime();
-        if (!dropTime) {
-          return;
-        }
-        handleInput({ action });
-      }
+      else resumeDropTime();
     }
-  }, [keyPress]);
-  const handleKeyUp = useCallback((e) => {
-    setKeyPress({ keyUp: e.code, keyDown: '' });
-  }, [keyPress]);
-  const handleKeyDown = useCallback((e) => {
-    setKeyPress({ keyUp: '', keyDown: e.code });
-    setInterval(() => {
-      setKeyPress({ keyUp: e.code, keyDown: '' });
-    }, 100);
-  }, [keyPress]);
-  useEffect(() => {
-    window.addEventListener('keyup', handleKeyUp);
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keyup', handleKeyUp);
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
+    else if (action === Action.Quit) {
+      setGameOver(true);
+    }
+    else {
+      if (actionIsDrop(action)) resumeDropTime();
+      handleInput({ action });
+    }
+  };
   return (
-    <div
-      className="GameController"
+    <input
+      ref={ref}
+      type="text"
+      className="gameController"
+      onKeyDown={onKeyDown}
+      onKeyUp={onKeyUp}
+      autoFocus
+      onBlur={() => ref.current.focus()}
     />
   );
 }
-
 GameController.propTypes = {
   gameStats: PropTypes.object.isRequired,
   board: PropTypes.object.isRequired,
