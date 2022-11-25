@@ -49,14 +49,16 @@ function Tetris({
   });
   useEffect(() => {
     pauseDropTime();
-    setTimeout(() => {
+    const start = setTimeout(() => {
       setisStarted(true);
     }, 3500);
+    return () => clearTimeout(start);
   }, [isStarted]);
   useEffect(() => {
-    setTimeout(() => {
+    const drop = setTimeout(() => {
       resumeDropTime();
     }, 200);
+    return () => clearTimeout(drop);
   }, [isStarted]);
   useEffect(() => {
     if (gameOver.isGameOver) {

@@ -27,7 +27,7 @@ function Mute({
         fill="none"
         stroke="currentColor"
       >
-        <path d="m39,14-17,15H6V48H22l17,15z" fill="#111" strokeLinejoin="round" />
+        <path d="m39,14-17,15H6V48H22l17,15z" fill="none" strokeLinejoin="round" />
         <path d="m49,26 20,24m0-24-20,24" fill="none" strokeLinecap="round" />
       </svg>
       )}
