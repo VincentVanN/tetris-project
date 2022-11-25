@@ -11,11 +11,13 @@ import Tetris from '../Tetris/Tetris';
 import Mute from '../Mute/Mute';
 import Footer from '../Footer/Footer';
 import { useGameStats } from '../../hooks/useGameStats';
+import { useDropTime } from '../../hooks/useDropTime';
 
 function Game({ rows, columns }) {
   const [playMusic, setplayMusic] = useState(true);
   const [clickMute, setclickMute] = useState(false);
   const [gameStats, addLinesCleared, setGameStats] = useGameStats();
+  const [dropTime, pauseDropTime, resumeDropTime] = useDropTime({ gameStats });
   const [gameOver, setGameOver, resetGameOver] = useGameOver();
   const gameoverSound = new Audio(gameover);
   const start = () => {
@@ -26,6 +28,7 @@ function Game({ rows, columns }) {
   });
   useEffect(() => {
     if (gameOver.isGameOver && gameOver.afterPlaying) {
+      pauseDropTime();
       setplayMusic(false);
       gameoverSound.play();
       setTimeout(() => {
@@ -91,6 +94,9 @@ function Game({ rows, columns }) {
               playMusic={playMusic}
               gameStats={gameStats}
               addLinesCleared={addLinesCleared}
+              dropTime={dropTime}
+              pauseDropTime={pauseDropTime}
+              resumeDropTime={resumeDropTime}
             />
           </>
         )}
