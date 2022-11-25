@@ -42,9 +42,11 @@ function GameController({
       setPlayer,
     });
   };
+
   useInterval(() => {
     handleInput({ action: Action.SlowDrop });
   }, dropTime);
+
   useLayoutEffect(() => {
     if (keyPress.keyUp) {
       const action = actionForKey(keyPress.keyUp);

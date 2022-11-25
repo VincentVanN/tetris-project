@@ -12,7 +12,6 @@ import Previews from '../Previews/Previews';
 import './tetris.scss';
 import ParticlesComponent from '../Particles/ParticlesComponent';
 import { tetrisParticles } from '../../particles/particlesOptions';
-import { useDropTime } from '../../hooks/useDropTime';
 import TactilePad from '../TactilePad/TactilePad';
 
 function Tetris({
@@ -23,6 +22,9 @@ function Tetris({
   gameOver,
   gameStats,
   addLinesCleared,
+  dropTime,
+  pauseDropTime,
+  resumeDropTime,
 }) {
   const tetrisMusic = new Audio(gameTypeA);
   useEffect(() => {
@@ -45,9 +47,6 @@ function Tetris({
     resetPlayer,
     addLinesCleared,
   });
-  const [dropTime, pauseDropTime, resumeDropTime] = useDropTime({
-    gameStats,
-  });
   useEffect(() => {
     pauseDropTime();
     setTimeout(() => {
@@ -69,48 +68,50 @@ function Tetris({
     <div
       className="tetris"
     >
-      <motion.div
-        className="starterWindow"
-        initial={{ scale: 1 }}
-        animate={{
-          scale: !isStarted ? 1 : 0,
-        }}
-        style={{
-          background: !isStarted ? '#000' : 'transparent',
-        }}
-      >
-        <p className="starterWindow-text">let's go!!</p>
-      </motion.div>
-
-      <ParticlesComponent
-        optionParticles={tetrisParticles}
-      />
-
-      <div
-        className="boardContainer"
-        style={{
-          marginBottom: isMobile ? '10vh' : 0,
-        }}
-      >
-        <Board board={board} isLvUp={isLvUp} setisLvUp={setisLvUp} />
-        <div className="rightPart">
-          <Previews tetrominoes={player.tetrominoes} />
-          <GameStats gameStats={gameStats} playMusic={playMusic} setisLvUp={setisLvUp} />
+      {!gameOver.isGameOver && (
+      <>
+        <motion.div
+          className="starterWindow"
+          initial={{ scale: 1 }}
+          animate={{
+            scale: !isStarted ? 1 : 0,
+          }}
+          style={{
+            background: !isStarted ? '#000' : 'transparent',
+          }}
+        >
+          <p className="starterWindow-text">let's go!!</p>
+        </motion.div><ParticlesComponent
+          optionParticles={tetrisParticles}
+        />
+        <div
+          className="boardContainer"
+          style={{
+            marginBottom: isMobile ? '10vh' : 0,
+          }}
+        >
+          <Board board={board} isLvUp={isLvUp} setisLvUp={setisLvUp} />
+          <div className="rightPart">
+            <Previews tetrominoes={player.tetrominoes} />
+            <GameStats gameStats={gameStats} playMusic={playMusic} setisLvUp={setisLvUp} />
+          </div>
         </div>
-      </div>
-      <GameController
-        board={board}
-        gameStats={gameStats}
-        player={player}
-        setGameOver={setGameOver}
-        setPlayer={setPlayer}
-        dropTime={dropTime}
-        pauseDropTime={pauseDropTime}
-        resumeDropTime={resumeDropTime}
-      />
-      {isMobile && (
-      <TactilePad />
+        <GameController
+          board={board}
+          gameStats={gameStats}
+          player={player}
+          setGameOver={setGameOver}
+          setPlayer={setPlayer}
+          dropTime={dropTime}
+          pauseDropTime={pauseDropTime}
+          resumeDropTime={resumeDropTime}
+        />
+        {isMobile && (
+        <TactilePad />
+        )}
+      </>
       )}
+
     </div>
   );
 }
@@ -122,5 +123,11 @@ Tetris.propTypes = {
   gameOver: PropTypes.object.isRequired,
   gameStats: PropTypes.object.isRequired,
   addLinesCleared: PropTypes.func.isRequired,
+  dropTime: PropTypes.number,
+  pauseDropTime: PropTypes.func.isRequired,
+  resumeDropTime: PropTypes.func.isRequired,
+};
+Tetris.defaultProps = {
+  dropTime: null,
 };
 export default Tetris;
