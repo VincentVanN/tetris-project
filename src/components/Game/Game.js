@@ -20,7 +20,6 @@ function Game({ rows, columns }) {
   const [dropTime, pauseDropTime, resumeDropTime] = useDropTime({ gameStats });
   const [gameOver, setGameOver, resetGameOver] = useGameOver();
   const gameoverSound = new Audio(gameover);
-  console.log(dropTime);
   const start = () => {
     resetGameOver();
   };
